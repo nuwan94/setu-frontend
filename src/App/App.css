@@ -1,0 +1,14 @@
+.logo {
+    vertical-align: middle;
+    float: left;
+    height: 60px;
+    margin-top: 5px;
+}
+
+.site-layout-background {
+    background: #fff;
+}
+
+.app-title {
+    text-align: center;
+}
