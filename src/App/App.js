@@ -11,11 +11,14 @@ import Axios from "axios";
 const { Header, Content, Footer } = Layout;
 const auth = new Auth();
 
-const USERS_API_URL = "https://setu-api.azurewebsites.net/students";
-const FILE_UPLAOD_URL = "https://setu-api.azurewebsites.net/reports/upload";
+const BASE_URL = "https://setu-api.azurewebsites.net";
+
+const USERS_API_URL = BASE_URL + "/students";
+const FILE_UPLAOD_URL = BASE_URL + "/reports/upload";
 
 const AppContent = () => {
-  const [tableData, setTableData] = useState({ source: "Loading..", data: [] });
+  const [tableData, setTableData] = useState({ source: "Loading.." });
+  // const [fileList, setFileList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const columns = [
     {
@@ -46,10 +49,10 @@ const AppContent = () => {
   ];
 
   const uploadOptions = {
-    name: "file",
+    name: "report",
     action: FILE_UPLAOD_URL,
     headers: {},
-    withCredentials: true,
+    // fileList,
     onChange(info) {
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
@@ -93,7 +96,7 @@ const AppContent = () => {
             className="site-layout-background"
             style={{ padding: "24px", minHeight: 280 }}
           >
-            <h2 className="app-title"> Internship Management System </h2>
+            <h2 className="app-title">Internship Management System</h2>
             <h4>
               {`Welcome, ${auth.currentUser().firstName} ${
                 auth.currentUser().lastName
@@ -102,6 +105,7 @@ const AppContent = () => {
             <Badge.Ribbon text={tableData.source.toUpperCase()}>
               <Card>
                 <Table
+                  rowKey="{record => record.id}"
                   loading={isLoading}
                   dataSource={tableData.data}
                   columns={columns}
@@ -109,7 +113,7 @@ const AppContent = () => {
                     pageSize: 5,
                   }}
                 />
-                <Upload multiple={false} {...uploadOptions}>
+                <Upload {...uploadOptions}>
                   <Button>
                     <UploadOutlined /> Upload Report
                   </Button>
